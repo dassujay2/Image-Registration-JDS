@@ -6,15 +6,15 @@ library(metaSEM)
 
 
 
-img<-readJPEG("girl.jpg")    ##reference image, `girl image in this case. Change the image file name accordinly for any other image
-img_zoom<-readJPEG("girl_z.jpg")  ##zoomed image
+im<-readJPEG("girl.jpg")    ##reference input image, `girl image in this case. Change the image file name accordinly for any other image
+im_zoom<-readJPEG("girl_z.jpg")  ##zoomed input image
 
 
 ## Registration algorithm for zoomed in real image##
 w1<-20
 
-img<- padarray(img_zoom,c(w1,w1),"symmetric","both")  #Zoomed image
-img_zoom<-padarray(img,c(w1,w1),"symmetric","both")     #Reference image
+img<- padarray(im,c(w1,w1),"symmetric","both")  
+img_zoom<-padarray(im_zoom,c(w1,w1),"symmetric","both")     
 
 #set.seed(8)
 m=proc.time()
@@ -100,7 +100,7 @@ for(i in (w1+1):(nrow(img)-w1))
       if(stop){break}
     }
     if(stop){break}
-    #r[is.infinite(r)]<-0
+    r[is.infinite(r)]<-0
     index_L2<-which.min(msd)
     index_L1<-which.min(mad)
     index_cor<-which.max(r)
@@ -189,9 +189,13 @@ for(i in (w1+r1):(nrow(img)-w1-r1+1))
       n3<-n3+1
     }
     
-    n<-n+1
+    
   }
 }
+
+MSD_L1<-t1/n1
+MSD_L2<-t2/n2
+MSD_cor<-t3/n3
 
 
 L1_img<-matrix(NA,nrow = nrow(img)-2*w1,ncol = ncol(img)-2*w1)  #Registered image under L1-norm
