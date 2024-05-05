@@ -1,27 +1,27 @@
-#setwd("file-path")  e.g. setwd("C:\\Users\\Documents"), assuming the image file is saved in the location "C:\\Users\\Documents"
- 
+setwd("file-path")  #e.g. setwd("C:\\Users\\Documents"), assuming the image file is saved in the location "C:\\Users\\Documents"
+
 library(matlab)
 library(jpeg)
 library(metaSEM)
 
 
 
-im<-readJPEG("girl.jpg")    ##input reference image, `girl image in this case. Change the image file name accordinly for any other image
-im_zoom<-readJPEG("girl_z.jpg")  ##input zoomed image
+img<-readJPEG("girl.jpg")    ##reference image, `girl image in this case. Change the image file name accordinly for any other image
+img_zoom<-readJPEG("girl_z.jpg")  ##zoomed image
 
-  
+
 ## Registration algorithm for zoomed in real image##
 w1<-20
 
-img<- padarray(im_zomm,c(w1,w1),"symmetric","both")  
-img_zoom<-padarray(im,c(w1,w1),"symmetric","both")     
-  
+img<- padarray(img_zoom,c(w1,w1),"symmetric","both")  #Zoomed image
+img_zoom<-padarray(img,c(w1,w1),"symmetric","both")     #Reference image
+
 #set.seed(8)
 m=proc.time()
 stop<-FALSE
 
+dim(pepper_zm)
 
-#Registration procedure for r1=2, r2=6
 #Change the parameter values of r1 and r2 below. 
 r1<-2
 r2<-6
@@ -111,6 +111,9 @@ for(i in (w1+1):(nrow(img)-w1))
   if(stop){break}
 }
 
+n=proc.time()
+
+m-n
 ##Removing Na'S
 
 h<-2
@@ -161,19 +164,30 @@ for(i in (w1+r1):(nrow(img)-w1-r1+1))
 t1<-0
 t2<-0
 t3<-0
-n<-0
+n1<-0
+n2<-0
+n3<-0
 for(i in (w1+r1):(nrow(img)-w1-r1+1))
 {
   for(j in (w1+r1):(nrow(img)-w1-r1+1))
   {
     if(is.na(img_L1[i,j])==FALSE)
-    t1<-t1+(img_zoom[i,j]-img_L1[i,j])^2
+    {
+      t1<-t1+(img_zoom[i,j]-img_L1[i,j])^2
+      n1<-n1+1
+    }
     
     if(is.na(img_L2[i,j])==FALSE)
-    t2<-t2+(img_zoom[i,j]-img_L2[i,j])^2
+    {
+      t2<-t2+(img_zoom[i,j]-img_L2[i,j])^2
+      n2<-n2+1
+    }
     
     if(is.na(img_cor[i,j])==FALSE)
-    t3<-t3+(img_zoom[i,j]-img_cor[i,j])^2
+    {
+      t3<-t3+(img_zoom[i,j]-img_cor[i,j])^2
+      n3<-n3+1
+    }
     
     n<-n+1
   }
@@ -189,10 +203,8 @@ L2_img[(r1+1):((nrow(L2_img)-r1)),(r1+1):((ncol(L2_img)-r1))]<-img_L2[(w1+r1+1):
 cor_img<-matrix(NA,nrow = nrow(img)-2*w1,ncol = ncol(img)-2*w1) #Registered image under CC-method
 cor_img[(r1+1):((nrow(cor_img)-r1)),(r1+1):((ncol(cor_img)-r1))]<-img_cor[(w1+r1+1):((nrow(img)-w1-r1)),(w1+r1+1):((ncol(img)-w1-r1))]
 
-
-#For visualization of the registered image
-image(rot90(L1_img,3),col = grey(seq(0,1,length=256)))  #Registreded under L1-norm
-
+windows(10,10)
+image(rot90(L1_img,3),col = grey(seq(0,1,length=256)))
 ##Anomaly detection
 
 anomaly_L2<-matrix(data=NA,nrow = nrow(img),ncol = ncol(img))
@@ -233,7 +245,4 @@ L2_anmy[(r1+1):((nrow(L2_anmy)-r1)),(r1+1):((ncol(L2_anmy)-r1))]<-anomaly_L2[(w1
 
 cor_anmy<-matrix(NA,nrow = nrow(img)-2*w1,ncol = ncol(img)-2*w1)   #Anomaly image under CC-method
 cor_anmy[(r1+1):((nrow(cor_anmy)-r1)),(r1+1):((ncol(cor_anmy)-r1))]<-anomaly_cor[(w1+r1+1):((nrow(img)-w1-r1)),(w1+r1+1):((ncol(img)-w1-r1))]
-
-#For visualization of the anomaly image
-image(rot90(L1_anmy,3),col = grey(seq(0,1,length=256)))  #Anomaly image under L1-norm
 
