@@ -1,4 +1,4 @@
- setwd("file-path")  #e.g. setwd("C:\\Users\\Documents")
+ setwd("file-path")  #e.g. setwd("C:\\Users\\Documents"), assuming the image file is saved in the location "C:\\Users\\Documents"
  
 library(matlab)
 library(jpeg)
@@ -6,7 +6,7 @@ library(metaSEM)
 
 
 
-img<-readJPEG("girl.jpg")    ##reference image 
+img<-readJPEG("girl.jpg")    ##reference image, `girl image in this case. Change the image file name accordinly for any other image
 img_zoom<-readJPEG("girl_z.jpg")  ##zoomed image
 
   
@@ -20,9 +20,9 @@ set.seed(8)
 m=proc.time()
 stop<-FALSE
 
-dim(pepper_zm)
 
-
+#Registration procedure for r1=2, r2=6
+#Change the parameter values of r1 and r2 below. 
 r1<-2
 r2<-6
 
@@ -190,6 +190,8 @@ cor_img<-matrix(NA,nrow = nrow(img)-2*w1,ncol = ncol(img)-2*w1) #Registered imag
 cor_img[(r1+1):((nrow(cor_img)-r1)),(r1+1):((ncol(cor_img)-r1))]<-img_cor[(w1+r1+1):((nrow(img)-w1-r1)),(w1+r1+1):((ncol(img)-w1-r1))]
 
 
+#For visualization of the registered image
+image(rot90(L1_img,3),col = grey(seq(0,1,length=256)))  #Registreded under L1-norm
 
 ##Anomaly detection
 
@@ -232,4 +234,6 @@ L2_anmy[(r1+1):((nrow(L2_anmy)-r1)),(r1+1):((ncol(L2_anmy)-r1))]<-anomaly_L2[(w1
 cor_anmy<-matrix(NA,nrow = nrow(img)-2*w1,ncol = ncol(img)-2*w1)   #Anomaly image under CC-method
 cor_anmy[(r1+1):((nrow(cor_anmy)-r1)),(r1+1):((ncol(cor_anmy)-r1))]<-anomaly_cor[(w1+r1+1):((nrow(img)-w1-r1)),(w1+r1+1):((ncol(img)-w1-r1))]
 
+#For visualization of the anomaly image
+image(rot90(L1_anmy,3),col = grey(seq(0,1,length=256)))  #Anomaly image under L1-norm
 
