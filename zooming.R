@@ -1,4 +1,4 @@
- setwd("file-path")  #e.g. setwd("C:\\Users\\Documents"), assuming the image file is saved in the location "C:\\Users\\Documents"
+#setwd("file-path")  e.g. setwd("C:\\Users\\Documents"), assuming the image file is saved in the location "C:\\Users\\Documents"
  
 library(matlab)
 library(jpeg)
