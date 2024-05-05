@@ -20,7 +20,7 @@ img_zoom<-padarray(im_zoom,c(w1,w1),"symmetric","both")
 m=proc.time()
 stop<-FALSE
 
-dim(pepper_zm)
+
 
 #Change the parameter values of r1 and r2 below. 
 r1<-2
