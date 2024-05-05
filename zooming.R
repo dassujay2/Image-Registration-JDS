@@ -1,8 +1,13 @@
- 
+ setwd("file-path")  #e.g. setwd("C:\\Users\\Documents")
  
 library(matlab)
 library(jpeg)
 library(metaSEM)
+
+
+
+img<-readJPEG("girl.jpg")    ##reference image 
+img_zoom<-readJPEG("girl_z.jpg")  ##zoomed image
 
   
 ## Registration algorithm for zoomed in real image##
