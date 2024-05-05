@@ -6,8 +6,8 @@ library(metaSEM)
 
 
 
-img<-readJPEG("girl.jpg")    ##reference image, `girl image in this case. Change the image file name accordinly for any other image
-img_zoom<-readJPEG("girl_z.jpg")  ##zoomed image
+im<-readJPEG("girl.jpg")    ##reference image, `girl image in this case. Change the image file name accordinly for any other image
+im_zoom<-readJPEG("girl_z.jpg")  ##zoomed image
 
   
 ## Registration algorithm for zoomed in real image##
