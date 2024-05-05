@@ -13,8 +13,8 @@ im_zoom<-readJPEG("girl_z.jpg")  ##zoomed image
 ## Registration algorithm for zoomed in real image##
 w1<-20
 
-img<- padarray(im_zomm,c(w1,w1),"symmetric","both")  #Zoomed image
-img_zoom<-padarray(im,c(w1,w1),"symmetric","both")     #Reference image
+img<- padarray(im_zomm,c(w1,w1),"symmetric","both")  
+img_zoom<-padarray(im,c(w1,w1),"symmetric","both")     
   
 #set.seed(8)
 m=proc.time()
