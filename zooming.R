@@ -5,8 +5,8 @@ library(jpeg)
 library(metaSEM)
 
 #Here we are generating the registered image for the `girl' image for r1=2 and r2=6.
-#For any other image and and any other r1 and r2 value, we can generate the regitered images accordingly
-#We need to change the `im, im_zoom, r1 and r2' accordingly.
+#For any other image and and any other r1 and r2 value, we can generate the regitered images accordingly.
+#For that we need to change the `im, im_zoom, r1 and r2' accordingly.
 #Here the MSD values will not exactly be equal to the tabulated values. As we are running one instance here.
 #Whereas, in the paper, we ran this for 10 times and took the average of the MSD values.
 #Though the MSD values will be pretty close to the tabulated value.
@@ -214,7 +214,9 @@ cor_img<-matrix(NA,nrow = nrow(img)-2*w1,ncol = ncol(img)-2*w1) #Registered imag
 cor_img[(r1+1):((nrow(cor_img)-r1)),(r1+1):((ncol(cor_img)-r1))]<-img_cor[(w1+r1+1):((nrow(img)-w1-r1)),(w1+r1+1):((ncol(img)-w1-r1))]
 
 windows(10,10)
-image(rot90(L1_img,3),col = grey(seq(0,1,length=256)))
+image(rot90(L1_img,3),col = grey(seq(0,1,length=256))) ##Registered image for L1-norm.
+
+
 ##Anomaly detection
 
 anomaly_L2<-matrix(data=NA,nrow = nrow(img),ncol = ncol(img))
