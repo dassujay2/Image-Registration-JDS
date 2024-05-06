@@ -4,6 +4,12 @@ library(matlab)
 library(jpeg)
 library(metaSEM)
 
+#Here we are generating the registered image for the `girl' image for r1=2 and r2=6.
+#For any other image and and any other r1 and r2 value, we can generate the regitered images accordingly
+#We need to change the `im, im_zoom, r1 and r2' accordingly.
+#Here the MSD values will not exactly be equal to the tabulated values. As we are running one instance here.
+#Whereas, in the paper, we ran this for 10 times and took the average of the MSD values.
+#Though the MSD values will be pretty close to the tabulated value.
 
 
 im<-readJPEG("girl.jpg")    ##reference input image, `girl image in this case. Change the image file name accordinly for any other image
@@ -13,8 +19,8 @@ im_zoom<-readJPEG("girl_z.jpg")  ##zoomed input image
 ## Registration algorithm for zoomed in real image##
 w1<-20
 
-img<- padarray(im,c(w1,w1),"symmetric","both")  
-img_zoom<-padarray(im_zoom,c(w1,w1),"symmetric","both")     
+img<- padarray(im_zoom,c(w1,w1),"symmetric","both")  
+img_zoom<-padarray(im,c(w1,w1),"symmetric","both")     
 
 #set.seed(8)
 m=proc.time()
@@ -113,7 +119,7 @@ for(i in (w1+1):(nrow(img)-w1))
 
 n=proc.time()
 
-m-n
+n-m
 ##Removing Na'S
 
 h<-2
@@ -193,9 +199,9 @@ for(i in (w1+r1):(nrow(img)-w1-r1+1))
   }
 }
 
-MSD_L1<-t1/n1
-MSD_L2<-t2/n2
-MSD_cor<-t3/n3
+MSD_L1<-sqrt(t1/n1)
+MSD_L2<-sqrt(t2/n2)
+MSD_cor<-sqrt(t3/n3)
 
 
 L1_img<-matrix(NA,nrow = nrow(img)-2*w1,ncol = ncol(img)-2*w1)  #Registered image under L1-norm
