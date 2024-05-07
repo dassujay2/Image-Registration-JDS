@@ -5,11 +5,17 @@ library(jpeg)
 library(metaSEM)
 
 #Here we are generating the registered image for the `girl' image for r1=2 and r2=6.
+#In this case, we generate the MSD values for (r1=2, r2=6) as in Table 2,
+#and generate the first image in the second row of Figure 4.
+
 #For any other image and and any other r1 and r2 value, we can generate the regitered images accordingly.
 #For that we need to change the `im, im_zoom, r1 and r2' accordingly.
+
 #Here the MSD values will not exactly be equal to the tabulated values. As we are running one instance here.
 #Whereas, in the paper, we ran this for 10 times and took the average of the MSD values.
 #Though the MSD values will be pretty close to the tabulated value.
+
+#Run-time for one inastance is about 5-8 minutes for the `girl' image.
 
 
 im<-readJPEG("girl.jpg")    ##reference input image, `girl image in this case. Change the image file name accordinly for any other image
@@ -19,8 +25,8 @@ im_zoom<-readJPEG("girl_z.jpg")  ##zoomed input image
 ## Registration algorithm for zoomed in real image##
 w1<-20
 
-img<- padarray(im_zoom,c(w1,w1),"symmetric","both")  
-img_zoom<-padarray(im,c(w1,w1),"symmetric","both")     
+img<- padarray(im_zoom,c(w1,w1),"symmetric","both")  # padded zoomed image (by the def. of the paper)
+img_zoom<-padarray(im,c(w1,w1),"symmetric","both")    # padded reference image (by the def. of the paper) 
 
 #set.seed(8)
 m=proc.time()
@@ -213,8 +219,7 @@ L2_img[(r1+1):((nrow(L2_img)-r1)),(r1+1):((ncol(L2_img)-r1))]<-img_L2[(w1+r1+1):
 cor_img<-matrix(NA,nrow = nrow(img)-2*w1,ncol = ncol(img)-2*w1) #Registered image under CC-method
 cor_img[(r1+1):((nrow(cor_img)-r1)),(r1+1):((ncol(cor_img)-r1))]<-img_cor[(w1+r1+1):((nrow(img)-w1-r1)),(w1+r1+1):((ncol(img)-w1-r1))]
 
-windows(10,10)
-image(rot90(L1_img,3),col = grey(seq(0,1,length=256))) ##Registered image for L1-norm.
+
 
 
 ##Anomaly detection
@@ -258,3 +263,9 @@ L2_anmy[(r1+1):((nrow(L2_anmy)-r1)),(r1+1):((ncol(L2_anmy)-r1))]<-anomaly_L2[(w1
 cor_anmy<-matrix(NA,nrow = nrow(img)-2*w1,ncol = ncol(img)-2*w1)   #Anomaly image under CC-method
 cor_anmy[(r1+1):((nrow(cor_anmy)-r1)),(r1+1):((ncol(cor_anmy)-r1))]<-anomaly_cor[(w1+r1+1):((nrow(img)-w1-r1)),(w1+r1+1):((ncol(img)-w1-r1))]
 
+windows(10,10)
+image(rot90(L1_img,3),col = grey(seq(0,1,length=256))) ##Registered image for L1-norm.
+
+MSD_L1
+MSD_L2
+MSD_cor
